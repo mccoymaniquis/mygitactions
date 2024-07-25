@@ -1,21 +1,26 @@
-name: Super-Linter
+name: Run Test Script
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  super-lint:
-    name: Lint code base
+  run-test:
+    name: Run test.js script
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Run Super-Linter
-      uses: github/super-linter@latest
-      env:
-        DEFAULT_BRANCH: main
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20' # Ensure this matches your Node.js version
+
+    - name: Run test script
+      run: node test.js
